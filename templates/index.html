@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Gutenberg Book Scraper</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='1.2') }}">
 </head>
-
 <body>
     <div class="container">
         <header>
@@ -20,7 +18,7 @@
         {% endif %}
 
         <div class="main-layout">
-
+            
             <main class="book-content">
                 <div class="book-list">
                     {% for book in books %}
@@ -40,32 +38,23 @@
             </main>
 
             <aside class="sidebar">
-
+                
                 <div class="sidebar-section">
                     <h3>Navigation</h3>
                     <div class="pagination">
-                        <a href="{{ url_for('index', page=1) }}"
-                            class="page-btn {% if not has_prev %}disabled{% endif %}"> «« Home </a>
-                        <a href="{{ url_for('index', page=current_page - 1) }}"
-                            class="page-btn {% if not has_prev %}disabled{% endif %}"> ‹ Prev </a>
+                        <a href="{{ url_for('index', page=1) }}" class="page-btn {% if not has_prev %}disabled{% endif %}"> «« Home </a>
+                        <a href="{{ url_for('index', page=current_page - 1) }}" class="page-btn {% if not has_prev %}disabled{% endif %}"> ‹ Prev </a>
                         <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
-                        <a href="{{ url_for('index', page=current_page + 1) }}"
-                            class="page-btn {% if not has_next %}disabled{% endif %}"> Next › </a>
-                        <a href="{{ url_for('index', page=total_pages) }}"
-                            class="page-btn {% if not has_next %}disabled{% endif %}"> End »» </a>
+                        <a href="{{ url_for('index', page=current_page + 1) }}" class="page-btn {% if not has_next %}disabled{% endif %}"> Next › </a>
+                        <a href="{{ url_for('index', page=total_pages) }}" class="page-btn {% if not has_next %}disabled{% endif %}"> End »» </a>
                     </div>
                 </div>
 
                 <div class="sidebar-section">
-                    <h3>Generate PDF</h3>
                     <div class="selection-info">
                         <span id="selection-count">0 books selected</span>
                     </div>
                     <div id="validation-message" class="validation-message"></div>
-                    <div class="filename-input">
-                        <label for="filename">PDF Filename:</label>
-                        <input type="text" id="filename" value="gutenberg_books.pdf" placeholder="Enter filename">
-                    </div>
                     <button id="submit-btn" disabled>Generate PDF</button>
                     <div id="loading" class="loading hidden">
                         <p>Generating PDF...</p>
@@ -78,5 +67,4 @@
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
 </html>

@@ -90,14 +90,25 @@ class GutenbergScraper:
     def _parse_book_entry(self, entry):
         """Parse individual book entry"""
         try:
-            # Get title link
+           # --- ADD THIS CORRECTED BLOCK ---
             title_link = entry.find('a', class_='link')
             if not title_link:
-                return None
-            
-            title = title_link.get_text(strip=True)
+               return None
+
+            # The title is reliably inside a <span class="title">.
+            # We will target it directly.
+            title_span = title_link.find('span', class_='title')
+
+            if title_span:
+                title = title_span.get_text(strip=True)
+            else:
+                # This is a safety fallback. If a book has no title span,
+                # it will say "Title not found" instead of crashing the app.
+                title = "Title not found"
+
             book_url = urljoin(self.base_url, title_link['href'])
-            
+            # --- END OF CORRECTED BLOCK --- 
+           
             # Extract Gutenberg ID
             id_match = re.search(r'/ebooks/(\d+)', book_url)
             if not id_match:
