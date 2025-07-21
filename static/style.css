@@ -267,3 +267,68 @@ a.page-btn.disabled {
     pointer-events: none !important;
     cursor: not-allowed !important;
 }
+
+/* === NEW LAYOUT STYLES === */
+
+/* 1. Main Grid Layout */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px; /* Left column flexible, right column fixed width */
+    gap: 30px; /* Space between the columns */
+    align-items: start; /* Align items to the top */
+}
+
+/* 2. Sidebar Styling */
+.sidebar {
+    position: sticky; /* This is the magic! */
+    top: 20px; /* Stick to the top with a 20px margin */
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+/* 3. Sections within the Sidebar */
+.sidebar-section {
+    width: 100%;
+    margin-bottom: 25px;
+}
+.sidebar-section:last-child {
+    margin-bottom: 0;
+}
+.sidebar-section h3 {
+    color: #800000;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* 4. Adjustments for moved elements */
+.pagination {
+    display: grid; /* Use grid for a clean two-column button layout */
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.page-info {
+    grid-column: 1 / -1; /* Make the page count span the full width */
+    margin: 5px 0;
+}
+.selection-info {
+    margin-bottom: 15px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Make the filename input and submit button full-width */
+.filename-input input,
+#submit-btn {
+    width: 100%;
+}
+
+/* Styling for the new validation message area in the sidebar */
+.validation-message {
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-top: 10px;
+    color: #c00; /* Red color for errors */
+}

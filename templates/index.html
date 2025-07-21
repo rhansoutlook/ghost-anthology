@@ -1,90 +1,78 @@
-# File: templates/index.html
-"""
-Main HTML template for the application
-"""
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Gutenberg Book Scraper</title>  
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='1.1') }}">
+    <title>Project Gutenberg Book Scraper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='1.2') }}">
 </head>
 
 <body>
     <div class="container">
         <header>
             <h1>Project Gutenberg Book Scraper</h1>
-            <p>Select books to download and generate a PDF collection</p>
+            <p>Select books from the list on the left to create a PDF collection.</p>
         </header>
 
         {% if error %}
         <div class="error">{{ error }}</div>
         {% endif %}
 
-        <div class="controls">
-            <div class="selection-info">
-                <span id="selection-count">0 books selected</span>
-                <span id="word-estimate"></span>
-            </div>
-        </div>
-        <div class="pagination">
+        <div class="main-layout">
 
-            <a href="{{ url_for('index', page=1) }}" class="page-btn {% if not has_prev %}disabled{% endif %}">
-                «« Home
-            </a>
-
-            <a href="{{ url_for('index', page=current_page - 1) }}"
-                class="page-btn {% if not has_prev %}disabled{% endif %}">
-                ‹ Previous
-            </a>
-
-            <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
-
-            <a href="{{ url_for('index', page=current_page + 1) }}"
-                class="page-btn {% if not has_next %}disabled{% endif %}">
-                Next ›
-            </a>
-
-            <a href="{{ url_for('index', page=total_pages) }}"
-                class="page-btn {% if not has_next %}disabled{% endif %}">
-                End »»
-            </a>
-
-        </div>
-
-        <div class="book-list">
-            {% for book in books %}
-            <div class="book-item">
-                <input type="checkbox" id="book-{{ book.id }}" value="{{ book.id }}" class="book-checkbox"
-                    data-words="{{ book.estimated_words }}">
-                <label for="book-{{ book.id }}">
-                    <div class="book-info">
-                        <h3>{{ book.title }}</h3>
-                        <p class="author">by {{ book.author }}</p>
-                        <p class="downloads">Downloads: {{ book.download_count }}</p>
-                        <p class="word-count">~{{ book.estimated_words }} words</p>
+            <main class="book-content">
+                <div class="book-list">
+                    {% for book in books %}
+                    <div class="book-item">
+                        <input type="checkbox" id="book-{{ book.id }}" value="{{ book.id }}" class="book-checkbox"
+                            data-words="{{ book.estimated_words }}">
+                        <label for="book-{{ book.id }}">
+                            <div class="book-info">
+                                <h3>{{ book.title }}</h3>
+                                <p class="author">by {{ book.author }}</p>
+                                <p class="downloads">Downloads: {{ book.download_count }}</p>
+                            </div>
+                        </label>
                     </div>
-                </label>
-            </div>
-            {% endfor %}
-        </div>
+                    {% endfor %}
+                </div>
+            </main>
 
-        {% if books %}
+            <aside class="sidebar">
 
-        {% endif %}
+                <div class="sidebar-section">
+                    <h3>Navigation</h3>
+                    <div class="pagination">
+                        <a href="{{ url_for('index', page=1) }}"
+                            class="page-btn {% if not has_prev %}disabled{% endif %}"> «« Home </a>
+                        <a href="{{ url_for('index', page=current_page - 1) }}"
+                            class="page-btn {% if not has_prev %}disabled{% endif %}"> ‹ Prev </a>
+                        <span class="page-info">Page {{ current_page }} of {{ total_pages }}</span>
+                        <a href="{{ url_for('index', page=current_page + 1) }}"
+                            class="page-btn {% if not has_next %}disabled{% endif %}"> Next › </a>
+                        <a href="{{ url_for('index', page=total_pages) }}"
+                            class="page-btn {% if not has_next %}disabled{% endif %}"> End »» </a>
+                    </div>
+                </div>
 
-        <div class="submit-section">
-            <div class="filename-input">
-                <label for="filename">PDF Filename:</label>
-                <input type="text" id="filename" value="gutenberg_books.pdf" placeholder="Enter filename">
-            </div>
-            <button id="submit-btn" disabled>Submit</button>
-        </div>
+                <div class="sidebar-section">
+                    <h3>Generate PDF</h3>
+                    <div class="selection-info">
+                        <span id="selection-count">0 books selected</span>
+                    </div>
+                    <div id="validation-message" class="validation-message"></div>
+                    <div class="filename-input">
+                        <label for="filename">PDF Filename:</label>
+                        <input type="text" id="filename" value="gutenberg_books.pdf" placeholder="Enter filename">
+                    </div>
+                    <button id="submit-btn" disabled>Generate PDF</button>
+                    <div id="loading" class="loading hidden">
+                        <p>Generating PDF...</p>
+                    </div>
+                </div>
 
-        <div id="loading" class="loading hidden">
-            <p>Generating PDF... This may take a few minutes.</p>
+            </aside>
         </div>
     </div>
 
