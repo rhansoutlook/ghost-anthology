@@ -1,4 +1,6 @@
-Flask
-fpdf2
-requests
-beautifulsoup4
+# File: requirements.txt
+Flask==2.3.3
+requests==2.31.0
+beautifulsoup4==4.12.2
+reportlab==4.0.4
+lxml==4.9.3

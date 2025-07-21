@@ -1,59 +1,34 @@
-# Makefile for Ghost Story Anthology Project
+# File: Makefile
+.PHONY: setup run clean
 
-VENV_NAME = ghost-anthology
-PYTHON = $(VENV_NAME)/bin/python
-PIP = $(VENV_NAME)/bin/pip
-FLASK = $(VENV_NAME)/bin/flask
-
-# --------------------------------------
-# SETUP: Create virtual environment and install requirements
-# --------------------------------------
+# Setup the application
 setup:
-	@echo "🔧 Creating virtual environment..."
-	python3 -m venv $(VENV_NAME)
-	@echo "📦 Installing Python dependencies..."
-	$(PIP) install --upgrade pip
-	$(PIP) install -r requirements.txt
-	@echo "✅ Setup complete."
+	@echo "Setting up Project Gutenberg Scraper..."
+	@python -m pip install --upgrade pip
+	@pip install -r requirements.txt
+	@echo "Setup complete!"
 
-# --------------------------------------
-# RUN: Start the Flask app locally
-# --------------------------------------
+# Run the application
 run:
-	@echo "🚀 Starting Flask app at http://127.0.0.1:5000 ..."
-	PYTHONPATH=src FLASK_APP=src.app $(FLASK) run --port=5000
+	@echo "Starting Project Gutenberg Scraper..."
+	@python src/app.py
 
-# --------------------------------------
-# CLEAN: Remove Python bytecode and logs
-# --------------------------------------
+# Clean temporary files
 clean:
-	find . -name '__pycache__' -exec rm -r {} +
-	find . -name '*.pyc' -delete
-	rm -f error.log
+	@echo "Cleaning temporary files..."
+	@find . -type f -name "*.pyc" -delete
+	@find . -type d -name "__pycache__" -delete
+	@rm -f error.log
+	@echo "Clean complete!"
 
-# --------------------------------------
-# RESET: Remove venv and clean project
-# --------------------------------------
-reset:
-	rm -rf $(VENV_NAME)
-	make clean
+# Install and run (convenience target)
+install-and-run: setup run
 
-# --------------------------------------
-# GIT-CLEAN: Clean project artifacts, but KEEP venv
-# --------------------------------------
-git-clean:
-	find . -name '__pycache__' -exec rm -r {} +
-	find . -name '*.pyc' -delete
-	rm -f error.log
-
-# --------------------------------------
-# HELP: Show available targets
-# --------------------------------------
+# Help
 help:
-	@echo "🛠️  Available Makefile targets:"
-	@echo "  setup      – Create venv and install requirements"
-	@echo "  run        – Start Flask app (http://localhost:5000)"
-	@echo "  clean      – Remove .pyc, __pycache__, and logs"
-	@echo "  reset      – Remove venv and clean project"
-	@echo "  git-clean  – Clean repo artifacts, KEEP venv"
-	@echo "  help       – Show this help message"
+	@echo "Available targets:"
+	@echo "  setup          - Install dependencies"
+	@echo "  run            - Run the application"
+	@echo "  clean          - Remove temporary files"
+	@echo "  install-and-run - Setup and run in one command"
+	@echo "  help           - Show this help"
